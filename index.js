@@ -6,7 +6,7 @@ async function run() {
 		const inputs = {
 			token: core.getInput('repo-token', {required: true}),
 			prAdditional: core.getInput('pr-additional'),
-			issueAdditional: core.getInput('pr-additional'),
+			issueAdditional: core.getInput('issue-additional'),
 		}
 
 		const octokit = new github.getOctokit(inputs.token);
