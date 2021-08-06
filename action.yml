@@ -1,0 +1,16 @@
+name: "Add additional info to Issue/PR"
+description: ""
+author: "Milan Otáhal"
+runs:
+    using: "node12"
+    main: "dist/index.js"
+inputs:
+    repo-token:
+        description: "The GITHUB_TOKEN secret"
+        required: true
+    pr-additional:
+        description: "Additional info to PR"
+        required: false
+    issue-additional:
+        description: "Additional info to Issue"
+        required: false
