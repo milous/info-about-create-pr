@@ -18,6 +18,7 @@ async function run() {
 		if (detectIssueNumberMatch !== null) {
 			let detectIssueNumber = detectIssueNumberMatch[0];
 			core.info(`Detected issue number: ${detectIssueNumber}`);
+			core.info(`Issue additional: ${inputs.issueAdditional}`);
 
 			if (inputs.issueAdditional !== "") {
 				// const issueRequest = {
