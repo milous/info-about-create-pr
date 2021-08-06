@@ -18,7 +18,7 @@ async function run() {
 		}
 
 		let headBranch = github.context.payload.pull_request.head.ref;
-		let detectIssueNumber = baseBranch.match('\d+');
+		let detectIssueNumber = headBranch.match('\d+');
 
 		core.info(`Head branch: ${headBranch}`);
 
