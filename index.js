@@ -14,11 +14,12 @@ async function run() {
 
 		let headBranch = github.context.payload.pull_request.head.ref;
 		let detectIssueNumberMatch = headBranch.match(/\d+/g);
+		core.info(`Issue additional: ${inputs.issueAdditional}`);
 
 		if (detectIssueNumberMatch !== null) {
 			let detectIssueNumber = detectIssueNumberMatch[0];
 			core.info(`Detected issue number: ${detectIssueNumber}`);
-			core.info(`Issue additional: ${inputs.issueAdditional}`);
+
 
 			if (inputs.issueAdditional !== "") {
 				// const issueRequest = {
