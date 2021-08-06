@@ -15,7 +15,7 @@ async function run() {
 
 		core.info(`Head branch: ${headBranch}`);
 
-		if (detectIssueNumber !== NULL) {
+		if (detectIssueNumber !== null) {
 			core.info(`Detected issue number: ${detectIssueNumber[0]}`);
 		}
 
