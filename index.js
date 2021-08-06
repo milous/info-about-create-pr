@@ -11,7 +11,8 @@ async function run() {
 		}
 
 		let headBranch = github.context.payload.pull_request.head.ref;
-		let detectIssueNumber = headBranch.match('\d+');
+		let detectIssueNumber = headBranch.match(new RegExp("\d", "g"));
+		console.log(detectIssueNumber);
 
 		core.info(`Head branch: ${headBranch}`);
 
