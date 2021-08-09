@@ -83,12 +83,21 @@ async function run() {
 		if (inputs.prBodyPrefix !== "" || inputs.prBodySuffix !== "") {
 			const prNumber = github.context.payload.number;
 			let prBody = github.context.payload.pull_request.body;
+
 			if (inputs.prBodyPrefix !== "") {
-				prBody = outputs.prBodyPrefix + "\n" + prBody;
+				if (prBody === null) {
+					prBody = outputs.prBodyPrefix;
+				} else {
+					prBody = outputs.prBodyPrefix + "\n" + prBody;
+				}
 			}
 
 			if (inputs.prBodySuffix !== "") {
-				prBody += "\n" + outputs.prBodySuffix;
+				if (prBody === null) {
+					prBody = outputs.prBodySuffix;
+				} else {
+					prBody += "\n" + outputs.prBodySuffix;
+				}
 			}
 
 			const prResponse = await octokit
