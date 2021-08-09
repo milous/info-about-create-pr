@@ -29,7 +29,7 @@ async function run() {
 
 			prepare: function (source) {
 				console.log(source);
-				let out = source.replaceAll('{issueNumber}', this.detectedIssueNumber !== null ? this.detectedIssueNumber : '~');
+				let out = source.replace('{issueNumber}', this.detectedIssueNumber !== null ? this.detectedIssueNumber : '~');
 				console.log(out);
 				return out;
 			},
