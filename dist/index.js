@@ -18,6 +18,7 @@ async function run() {
 			issueBodyPrefix: core.getInput('issue-body-prefix'),
 			issueBodySuffix: core.getInput('issue-body-suffix'),
 			// payload
+			prNumber: github.context.payload.number,
 			repo: github.context.payload.repository.full_name,
 			headBranch: github.context.payload.pull_request.head.ref,
 		}
@@ -28,10 +29,10 @@ async function run() {
 			branch: inputs.headBranch,
 
 			prepare: function (source) {
-				console.log(source);
-				let out = source.replace('{issueNumber}', this.detectedIssueNumber !== null ? this.detectedIssueNumber : '~');
-				console.log(out);
-				return out;
+				return source
+					.replace('{issueNumber}', this.detectedIssueNumber !== null ? this.detectedIssueNumber : '~')
+					.replace('{prNumber}', inputs.prNumber)
+				;
 			},
 
 			get prBodyPrefix() {
