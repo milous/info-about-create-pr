@@ -17,6 +17,7 @@ async function run() {
 		let headBranch = github.context.payload.pull_request.head.ref;
 		let detectIssueNumberMatch = headBranch.match(/\d+/g);
 
+		// ISSUE
 		if (detectIssueNumberMatch === null) {
 			core.debug(`Issue number was not detected from the branch name: ${headBranch}`);
 		} else if (inputs.issueBodyPrefix === "" && inputs.issueBodyPrefix === "") {
@@ -50,14 +51,12 @@ async function run() {
 			}
 		}
 
+		// PR
 		if (inputs.prBodyPrefix !== "" || inputs.prBodySuffix !== "") {
 			const prNumber = github.context.payload.number;
-			console.log(github.context.payload);
 			let prBody = github.context.payload.pull_request.body;
-			console.log(prNumber);
-			console.log(prBody);
 			if (inputs.prBodyPrefix !== "") {
-				prBody = prBody + "\n" + inputs.prBodyPrefix;
+				prBody = inputs.prBodyPrefix + "\n" + prBody;
 			}
 
 			if (inputs.prBodySuffix !== "") {
@@ -69,8 +68,6 @@ async function run() {
 					body: prBody,
 				})
 			;
-
-			console.log(prResponse);
 
 			core.info(`PR response status: ${prResponse.status}`);
 			if (prResponse.status !== 200) {
