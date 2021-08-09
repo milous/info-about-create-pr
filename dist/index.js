@@ -30,8 +30,8 @@ async function run() {
 
 			prepare: function (source) {
 				return source
-					.replace('{issueNumber}', this.detectedIssueNumber !== null ? this.detectedIssueNumber : '~')
-					.replace('{prNumber}', inputs.prNumber)
+					.replace(new RegExp('{issueNumber}', 'g'), this.detectedIssueNumber !== null ? this.detectedIssueNumber : '~')
+					.replace(new RegExp('{prNumber}', 'g'), inputs.prNumber)
 				;
 			},
 
