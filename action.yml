@@ -9,14 +9,14 @@ inputs:
         description: "The GITHUB_TOKEN secret"
         required: true
     pr-body-prefix:
-        description: "Additional info to start of PR body"
+        description: "Additional info to start of PR body (variables {issueNumber}, {prNumber})"
         required: false
     pr-body-suffix:
-        description: "Additional info to end of PR body"
+        description: "Additional info to end of PR body (variables {issueNumber}, {prNumber})"
         required: false
     issue-body-prefix:
-        description: "Additional info to start of Issue body"
+        description: "Additional info to start of Issue body (variables {issueNumber}, {prNumber})"
         required: false
     issue-body-suffix:
-        description: "Additional info to end of Issue body"
+        description: "Additional info to end of Issue body (variables {issueNumber}, {prNumber})"
         required: false
