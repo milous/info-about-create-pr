@@ -53,6 +53,8 @@ async function run() {
 		if (inputs.prBodyPrefix !== "" || inputs.prBodySuffix !== "") {
 			const prNumber = github.context.payload.number;
 			let prBody = github.context.payload.body;
+			console.log(prNumber);
+			console.log(prBody);
 			if (inputs.prBodyPrefix !== "") {
 				prBody = prBody + "\n" + inputs.prBodyPrefix;
 			}
@@ -66,6 +68,8 @@ async function run() {
 					body: prBody,
 				})
 			;
+
+			console.log(prResponse);
 
 			core.info(`PR response status: ${prResponse.status}`);
 			if (prResponse.status !== 200) {
