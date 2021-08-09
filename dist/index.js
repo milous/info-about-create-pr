@@ -51,7 +51,7 @@ async function run() {
 				})
 			;
 
-			core.info(`Response: ${issueResponse.status}`);
+			core.info(`Issue response status: ${issueResponse.status}`);
 			if (issueResponse.status !== 200) {
 				core.error('Issue body was not updated');
 			}
@@ -74,7 +74,7 @@ async function run() {
 				})
 			;
 
-			core.info(`Response: ${prResponse.status}`);
+			core.info(`PR response status: ${prResponse.status}`);
 			if (prResponse.status !== 200) {
 				core.error('PR body was not updated');
 			}
