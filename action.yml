@@ -8,9 +8,15 @@ inputs:
     repo-token:
         description: "The GITHUB_TOKEN secret"
         required: true
-    pr-additional:
-        description: "Additional info to PR"
+    pr-body-prefix:
+        description: "Additional info to start of PR body"
         required: false
-    issue-additional:
-        description: "Additional info to Issue"
+    pr-body-suffix:
+        description: "Additional info to end of PR body"
+        required: false
+    issue-body-prefix:
+        description: "Additional info to start of Issue body"
+        required: false
+    issue-body-suffix:
+        description: "Additional info to end of Issue body"
         required: false

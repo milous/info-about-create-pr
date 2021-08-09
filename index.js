@@ -51,6 +51,7 @@ async function run() {
 		}
 
 		if (inputs.prBodyPrefix !== "" || inputs.prBodySuffix !== "") {
+			const prNumber = github.context.payload.number;
 			let prBody = github.context.payload.body
 			if (inputs.prBodyPrefix !== "") {
 				prBody = prBody + "\n" + inputs.prBodyPrefix;
@@ -61,7 +62,7 @@ async function run() {
 			}
 
 			const prResponse = await octokit
-				.request(`PATCH /repos/${repo}/issues/${detectIssueNumber}`, {
+				.request(`PATCH /repos/${repo}/issues/${prNumber}`, {
 					body: prBody,
 				})
 			;
