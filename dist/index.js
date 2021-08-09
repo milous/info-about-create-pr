@@ -59,7 +59,7 @@ async function run() {
 					})
 				;
 
-				// core.info(`Response: ${issueResponse.status}`);
+				core.info(`Response: ${issueResponse.status}`);
 			}
 		}
 
