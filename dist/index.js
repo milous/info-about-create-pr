@@ -51,13 +51,15 @@ async function run() {
 
 						issueBody += "\n" + inputs.issueAdditional;
 
+						core.info(`New issue body: ${issueBody}`)
+
 						return octokit.request(`PATCH /repos/${repo}/issues/${detectIssueNumber}`, {
 							body: issueBody,
 						});
 					})
 				;
 
-				core.info(`Response: ${issueResponse.status}`);
+				// core.info(`Response: ${issueResponse.status}`);
 			}
 		}
 
