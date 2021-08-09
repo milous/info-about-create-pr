@@ -4,42 +4,66 @@ const github = require('@actions/github');
 async function run() {
 	try {
 		const inputs = {
+			// settings
 			token: core.getInput('repo-token', {required: true}),
 			prBodyPrefix: core.getInput('pr-body-prefix'),
 			prBodySuffix: core.getInput('pr-body-suffix'),
 			issueBodyPrefix: core.getInput('issue-body-prefix'),
 			issueBodySuffix: core.getInput('issue-body-suffix'),
+			// payload
+			repo: github.context.payload.repository.full_name,
+			headBranch: github.context.payload.pull_request.head.ref,
 		}
 
-		const octokit = new github.getOctokit(inputs.token);
-		const repo = github.context.payload.repository.full_name;
+		const detectIssueNumberMatch = inputs.headBranch.match(/\d+/g);
+		const outputs = {
+			detectedIssueNumber: detectIssueNumberMatch !== null ? detectIssueNumberMatch[0] : null,
+			branch: inputs.headBranch,
 
-		let headBranch = github.context.payload.pull_request.head.ref;
-		let detectIssueNumberMatch = headBranch.match(/\d+/g);
+			prepare: function (source) {
+				return source.replaceAll('{issueNumber}', this.detectedIssueNumber ?? '~');
+			},
+
+			get prBodyPrefix() {
+				return this.prepare(inputs.prBodyPrefix);
+			},
+			get prBodySuffix() {
+				return this.prepare(inputs.prBodySuffix);
+			},
+			get issueBodyPrefix() {
+				return this.prepare(inputs.issueBodyPrefix);
+			},
+			get issueBodySuffix() {
+				return this.prepare(inputs.issueBodySuffix);
+			}
+		};
+
+		const octokit = new github.getOctokit(inputs.token);
+
+		if (outputs.detectedIssueNumber !== null) {
+			core.info(`Detected issue number: ${outputs.detectedIssueNumber}`);
+		}
 
 		// ISSUE
-		if (detectIssueNumberMatch === null) {
-			core.debug(`Issue number was not detected from the branch name: ${headBranch}`);
+		if (outputs.detectedIssueNumber === null) {
+			core.debug(`Issue number was not detected from the branch name: ${inputs.headBranch}`);
 		} else if (inputs.issueBodyPrefix === "" && inputs.issueBodyPrefix === "") {
 			core.debug('Issue prefix and suffix is not set');
 		} else {
-			let detectIssueNumber = detectIssueNumberMatch[0];
-			core.info(`Detected issue number: ${detectIssueNumber}`);
-
 			const issueResponse = await octokit
-				.request(`GET /repos/${repo}/issues/${detectIssueNumber}`)
+				.request(`GET /repos/${inputs.repo}/issues/${outputs.detectedIssueNumber}`)
 				.then(function (res) {
 					let issueBody = res.data.body;
 
 					if (inputs.issueBodyPrefix !== "") {
-						issueBody = inputs.issueBodyPrefix + "\n" + issueBody;
+						issueBody = outputs.issueBodyPrefix + "\n" + issueBody;
 					}
 
 					if (inputs.issueBodySuffix !== "") {
-						issueBody += "\n" + inputs.issueBodySuffix;
+						issueBody += "\n" + outputs.issueBodySuffix;
 					}
 
-					return octokit.request(`PATCH /repos/${repo}/issues/${detectIssueNumber}`, {
+					return octokit.request(`PATCH /repos/${inputs.repo}/issues/${outputs.detectedIssueNumber}`, {
 						body: issueBody,
 					});
 				})
@@ -56,15 +80,15 @@ async function run() {
 			const prNumber = github.context.payload.number;
 			let prBody = github.context.payload.pull_request.body;
 			if (inputs.prBodyPrefix !== "") {
-				prBody = inputs.prBodyPrefix + "\n" + prBody;
+				prBody = outputs.prBodyPrefix + "\n" + prBody;
 			}
 
 			if (inputs.prBodySuffix !== "") {
-				prBody += "\n" + inputs.prBodySuffix;
+				prBody += "\n" + outputs.prBodySuffix;
 			}
 
 			const prResponse = await octokit
-				.request(`PATCH /repos/${repo}/pulls/${prNumber}`, {
+				.request(`PATCH /repos/${inputs.repo}/pulls/${prNumber}`, {
 					body: prBody,
 				})
 			;
