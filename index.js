@@ -21,7 +21,10 @@ async function run() {
 			branch: inputs.headBranch,
 
 			prepare: function (source) {
-				return source.replaceAll('{issueNumber}', this.detectedIssueNumber ?? '~');
+				console.log(source);
+				let out = source.replaceAll('{issueNumber}', this.detectedIssueNumber !== null ? this.detectedIssueNumber : '~');
+				console.log(out);
+				return out;
 			},
 
 			get prBodyPrefix() {
