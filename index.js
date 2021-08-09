@@ -25,6 +25,7 @@ async function run() {
 				return source
 					.replace(new RegExp('{issueNumber}', 'g'), this.detectedIssueNumber !== null ? this.detectedIssueNumber : '~')
 					.replace(new RegExp('{prNumber}', 'g'), inputs.prNumber)
+					.replace(new RegExp('{branch}', 'g'), inputs.headBranch)
 				;
 			},
 
