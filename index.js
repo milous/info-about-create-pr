@@ -53,7 +53,7 @@ async function run() {
 		if (inputs.prBodyPrefix !== "" || inputs.prBodySuffix !== "") {
 			const prNumber = github.context.payload.number;
 			console.log(github.context.payload);
-			let prBody = github.context.payload.body;
+			let prBody = github.context.payload.pull_request.body;
 			console.log(prNumber);
 			console.log(prBody);
 			if (inputs.prBodyPrefix !== "") {
